@@ -1,2 +1,1 @@
-is_dead,date_of_death,gender,birth_surname,use_surname,name,other_name1,other_name2,other_name3,nationality,birth_date,birth_city,birth_country,address,zip,city,country,file_number
-0,,mr,Joffroy,Joffroy,Vassili,Paul,Jean,Pavlov,Française,02/05/2002,Baltik,Russie,8 rue du tertre,92150,Suresnes,France Métropolitaine,X
+ref_dossier,date_of_death,gender,birth_surname,use_surname,name,other_name1,other_name2,other_name3,nationality,birth_date,birth_city,birth_country,address,zip,city,country
