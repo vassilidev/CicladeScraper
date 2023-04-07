@@ -41,14 +41,11 @@ let logger = winston.createLogger(logConfiguration);
 
     await page.setDefaultNavigationTimeout(0);
 
-    await page.exposeFunction('logger', message => logger.info(message))
-
     logger.info('Set User Agent');
 
     await page.setUserAgent(new UserAgent().toString());
 
     const rows = [];
-    const results = [];
 
     logger.info('Read input file');
 
@@ -72,14 +69,6 @@ let logger = winston.createLogger(logConfiguration);
         logger.info('Closing the browser');
 
         await browser.close();
-
-        logger.info('Write the output');
-
-        await fs.writeFile(process.env.OUTPUT_PATH, JSON.stringify(results), err => {
-            logger.error(err);
-        });
-
-        return results;
     }
 
     /**
@@ -93,8 +82,6 @@ let logger = winston.createLogger(logConfiguration);
         await page.goto(process.env.CICLADE_URL);
 
         await page.evaluate((row, process) => {
-            logger('Accept cookie');
-
             if (document.querySelector(process.env.ACCEPT_COOKIE_SELECTOR)) {
                 document.querySelector(process.env.ACCEPT_COOKIE_SELECTOR).click();
             }
@@ -182,11 +169,13 @@ let logger = winston.createLogger(logConfiguration);
         if (isWorking) {
             logger.info('GG ! ' + row.ref_dossier);
 
-            results.push(row);
+            await fs.appendFile(process.env.OUTPUT_PATH, JSON.stringify(row), err => {
+                logger.error(err);
+            });
         } else {
             logger.info(':( Nothing for ' + row.ref_dossier);
         }
 
-        return results;
+        logger.info('****************************************************')
     }
 })();
